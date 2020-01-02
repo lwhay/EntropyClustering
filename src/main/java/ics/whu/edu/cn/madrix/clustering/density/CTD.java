@@ -234,7 +234,7 @@ public class CTD extends AbstractDensityClustering {
     }
 
     private void MergeBridgeKernels(Map<Integer, Double> BridgeOrders, List<Integer> BDrho, List<Integer> CNrho, int nn,
-            int m, boolean b) {
+                                    int m, boolean b) {
         int count = 0;
         if (BDrho.size() > 0) {
             Map<Integer, Double> Bridgenew = new HashMap<Integer, Double>();

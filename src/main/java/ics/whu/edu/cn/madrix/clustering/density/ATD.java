@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
@@ -120,11 +120,11 @@ public class ATD extends AbstractDensityClustering implements IClustering {
                 }
             }
         }
-//        if (--nnLevel > 0) {
-//            for (int noid : curNNs) {
-//                levelNNs(ooid, noid, nnAvg, pathNNs, nnLevel);
-//            }
-//        }
+        /*if (--nnLevel > 0) {
+            for (int noid : curNNs) {
+                levelNNs(ooid, noid, nnAvg, pathNNs, nnLevel);
+            }
+        }*/
     }
 
     private void intendFreshKT(int coid, List<Integer> path) {
@@ -142,7 +142,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         freshid = peakNNs(pathNNs);
         //int freshid = peakEntropyNNs(pathNNs, nnAvg);
         //int freshid = peakEntropyNNs(pathNNs, nnAvg);
-        Integer[] temp = newPathNNs.toArray(new Integer[] {});
+        Integer[] temp = newPathNNs.toArray(new Integer[]{});
         if (freshid != coid) {
             path.add(freshid);
             for (int i = 0; i < newPathNNs.size(); i++) {

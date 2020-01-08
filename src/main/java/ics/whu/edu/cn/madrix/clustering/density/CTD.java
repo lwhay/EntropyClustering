@@ -42,7 +42,8 @@ public class CTD extends AbstractDensityClustering {
         initEntropies = atd.getEntropies();
         KT = atd.getKT();
         DH = KT;
-        KKm = KT + 2;
+        //Specially, we can use KKm = KT + 2 in addition to ATD's commented lines to boost D31 and beyond.
+        KKm = 2 * KT + 1;
         Map<Integer, Integer> NX = CBridgeKernels(atd, rhoK, K);
         Index = NX;
         Collection<Integer> c = NX.values();

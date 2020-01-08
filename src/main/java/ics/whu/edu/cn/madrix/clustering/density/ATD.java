@@ -120,11 +120,12 @@ public class ATD extends AbstractDensityClustering implements IClustering {
                 }
             }
         }
-        /*if (--nnLevel > 0) {
+        //Commented lines especially for D31 and beyond.
+        if (--nnLevel > 0) {
             for (int noid : curNNs) {
                 levelNNs(ooid, noid, nnAvg, pathNNs, nnLevel);
             }
-        }*/
+        }
     }
 
     private void intendFreshKT(int coid, List<Integer> path) {

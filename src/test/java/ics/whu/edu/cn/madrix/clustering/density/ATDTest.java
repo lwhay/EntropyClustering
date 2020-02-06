@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
@@ -22,10 +22,10 @@ public class ATDTest {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-    	if (args.length != 4) {
-    		System.out.println("Usage: command path clusterNumber k isDTW");
-    		System.exit(-1);
-    	}
+        if (args.length != 4) {
+            System.out.println("Usage: command path clusterNumber k isDTW");
+            System.exit(-1);
+        }
         ClusteringBenchTranslator cbt = new ClusteringBenchTranslator(args[0]);
         int Ker = Integer.valueOf(args[1]).intValue();
         ATD atd = new ATD(cbt.getData(), Ker, Integer.parseInt(args[2]), Boolean.parseBoolean(args[3]));
@@ -103,6 +103,10 @@ public class ATDTest {
             int idx = 0;
             for (int label : cbt.getLabels()) {
                 groundTruth.put(idx++, label);
+            }
+            for (int i = 0; i < labels.length; i++) {
+                if (output.contains(labels[i]))
+                    System.out.println(cbt.getData()[i][0] + "\t" + cbt.getData()[i][1] + "\t" + labels[i]);
             }
             ClusteringMetrics cm = new ClusteringMetrics(groundTruth, labelMap);
             System.out.println("Acc: " + cm.getAcc() + " Ari: " + cm.getAri() + " Ami: " + cm.getAmi());

@@ -3,6 +3,8 @@
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
+
 /**
  * @author Administrator
  *
@@ -10,5 +12,5 @@ package ics.whu.edu.cn.madrix.clustering.density;
 public interface IClustering {
     public int[] export();
 
-    public void action();
+    public void action() throws MadrixException;
 }

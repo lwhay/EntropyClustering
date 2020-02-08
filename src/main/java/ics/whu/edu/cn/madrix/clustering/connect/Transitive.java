@@ -5,6 +5,7 @@ package ics.whu.edu.cn.madrix.clustering.connect;
 
 import ics.whu.edu.cn.madrix.clustering.density.AbstractDensityClustering;
 import ics.whu.edu.cn.madrix.clustering.density.IClustering;
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 import ics.whu.edu.cn.madrix.stream.utils.OrderInformation;
 
 import java.util.*;
@@ -24,8 +25,8 @@ public class Transitive extends AbstractDensityClustering implements IClustering
 
     private Map<Integer, Integer> nbCnts = new HashMap<>();
 
-    public Transitive(double[][] data, double cutoff, boolean isDTW) {
-        this.isDTW = isDTW;
+    public Transitive(double[][] data, double cutoff, int type) throws MadrixException {
+        this.type = type;
         this.data = data;
         this.cutoff = cutoff;
         rankingdist = new double[data.length * data.length];
@@ -33,7 +34,7 @@ public class Transitive extends AbstractDensityClustering implements IClustering
         for (int i = 0; i < data.length; i++) {
             dists[i] = new double[data.length];
             for (int j = 0; j < data.length; j++) {
-                dists[i][j] = distance(data[i], data[j], isDTW);
+                dists[i][j] = distance(data[i], data[j], type);
                 rankingdist[i * data.length + j] = dists[i][j];
             }
         }

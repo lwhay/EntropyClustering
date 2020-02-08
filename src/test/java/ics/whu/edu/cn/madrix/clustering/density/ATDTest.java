@@ -5,6 +5,7 @@ package ics.whu.edu.cn.madrix.clustering.density;
 
 import ics.whu.edu.cn.madrix.clustering.evaluation.ClusteringMetrics;
 import ics.whu.edu.cn.madrix.clustering.wapper.ClusteringBenchTranslator;
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 import ics.whu.edu.cn.madrix.stream.utils.OrderInformation;
 
 import java.io.IOException;
@@ -21,14 +22,14 @@ public class ATDTest {
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MadrixException {
         if (args.length != 4) {
             System.out.println("Usage: command path clusterNumber k isDTW");
             System.exit(-1);
         }
         ClusteringBenchTranslator cbt = new ClusteringBenchTranslator(args[0]);
         int Ker = Integer.valueOf(args[1]).intValue();
-        ATD atd = new ATD(cbt.getData(), Ker, Integer.parseInt(args[2]), Boolean.parseBoolean(args[3]));
+        ATD atd = new ATD(cbt.getData(), Ker, Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         atd.action();
         List<Integer> priority = atd.getPriority();
         for (int i = 0; i < cbt.getData().length; i++) {

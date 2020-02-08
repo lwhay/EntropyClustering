@@ -3,6 +3,7 @@ package ics.whu.edu.cn.madrix.clustering.density;
 import ics.whu.edu.cn.madrix.clustering.connect.Transitive;
 import ics.whu.edu.cn.madrix.clustering.evaluation.ClusteringMetrics;
 import ics.whu.edu.cn.madrix.clustering.wapper.ClusteringBenchTranslator;
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,13 +16,13 @@ public class ConntectTest {
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MadrixException {
         if (args.length != 3) {
             System.out.println("Usage: command path cutoff isDTW");
             System.exit(-1);
         }
         ClusteringBenchTranslator cbt = new ClusteringBenchTranslator(args[0]);
-        Transitive ds = new Transitive(cbt.getData(), Double.parseDouble(args[1]), Boolean.parseBoolean(args[2]));
+        Transitive ds = new Transitive(cbt.getData(), Double.parseDouble(args[1]), Integer.parseInt(args[2]));
         ds.action();
         int[] labels = ds.export();
         Map<Integer, Integer> ccnt = new HashMap<>();

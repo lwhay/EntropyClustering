@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 import ics.whu.edu.cn.madrix.stream.utils.OrderInformation;
 
 /**
@@ -29,8 +30,8 @@ public class DBSCAN extends AbstractDensityClustering implements IClustering {
 
     private Map<Integer, Integer> nbCnts = new HashMap<>();
 
-    public DBSCAN(double[][] data, double cutoff, int mpt, boolean isDTW) {
-        this.isDTW = isDTW;
+    public DBSCAN(double[][] data, double cutoff, int mpt, int type) throws MadrixException {
+        this.type = type;
         this.data = data;
         this.cutoff = cutoff;
         this.mpt = mpt;
@@ -39,7 +40,7 @@ public class DBSCAN extends AbstractDensityClustering implements IClustering {
         for (int i = 0; i < data.length; i++) {
             dists[i] = new double[data.length];
             for (int j = 0; j < data.length; j++) {
-                dists[i][j] = distance(data[i], data[j], isDTW);
+                dists[i][j] = distance(data[i], data[j], type);
                 rankingdist[i * data.length + j] = dists[i][j];
             }
         }

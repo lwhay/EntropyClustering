@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
@@ -13,6 +13,7 @@ import java.util.Set;
 import ics.whu.edu.cn.madrix.clustering.density.DBSCAN;
 import ics.whu.edu.cn.madrix.clustering.evaluation.ClusteringMetrics;
 import ics.whu.edu.cn.madrix.clustering.wapper.ClusteringBenchTranslator;
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 
 /**
  * @author Administrator
@@ -24,14 +25,14 @@ public class DBSCANTest {
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
-    	if (args.length != 4) {
-    		System.out.println("Usage: command path cutoff mpts isDTW");
-    		System.exit(-1);
-    	}
+    public static void main(String[] args) throws IOException, MadrixException {
+        if (args.length != 4) {
+            System.out.println("Usage: command path cutoff mpts isDTW");
+            System.exit(-1);
+        }
         ClusteringBenchTranslator cbt = new ClusteringBenchTranslator(args[0]);
         DBSCAN ds = new DBSCAN(cbt.getData(), Double.parseDouble(args[1]), Integer.parseInt(args[2]),
-                Boolean.parseBoolean(args[3]));
+                Integer.parseInt(args[3]));
         ds.action();
         int[] labels = ds.export();
         Map<Integer, Integer> ccnt = new HashMap<>();

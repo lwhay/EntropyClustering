@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.kmeans;
 
@@ -12,6 +12,7 @@ import java.util.Set;
 
 import ics.whu.edu.cn.madrix.clustering.density.AbstractDensityClustering;
 import ics.whu.edu.cn.madrix.clustering.density.IClustering;
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 
 /**
  * @author Administrator
@@ -22,7 +23,7 @@ public class KMeans implements IClustering {
 
     private int round = 0;
 
-    protected boolean isDTW = false;
+    protected int type = -1;
 
     protected double[][] data;
 
@@ -43,8 +44,8 @@ public class KMeans implements IClustering {
 
     private final double epsilon;
 
-    public KMeans(double[][] data, int K, double epsilon, boolean isDTW) {
-        this.isDTW = isDTW;
+    public KMeans(double[][] data, int K, double epsilon, int type) throws MadrixException {
+        this.type = type;
         this.data = data;
         this.epsilon = epsilon;
         this.K = K;
@@ -66,7 +67,7 @@ public class KMeans implements IClustering {
         for (int i = 0; i < data.length; i++) {
             dists[i] = new double[data.length];
             for (int j = 0; j < data.length; j++) {
-                dists[i][j] = AbstractDensityClustering.distance(data[i], data[j], isDTW);
+                dists[i][j] = AbstractDensityClustering.distance(data[i], data[j], type);
                 if (dists[i][j] > globalMaxDist) {
                     globalMaxDist = dists[i][j];
                 }
@@ -86,7 +87,7 @@ public class KMeans implements IClustering {
     }
 
     @Override
-    public void action() {
+    public void action() throws MadrixException {
         double avgEps = Double.MAX_VALUE;
         do {
             toClusters();
@@ -95,12 +96,12 @@ public class KMeans implements IClustering {
         System.out.println("Round: " + round + " avgEps: " + avgEps);
     }
 
-    private void toClusters() {
+    private void toClusters() throws MadrixException {
         for (int i = 0; i < data.length; i++) {
             double minDist = Double.MAX_VALUE;
             int belongTo = -1;
             for (int k = 0; k < kernels.length; k++) {
-                double dist = AbstractDensityClustering.distance(data[i], kernels[k], isDTW);
+                double dist = AbstractDensityClustering.distance(data[i], kernels[k], type);
                 if (dist < minDist) {
                     minDist = dist;
                     belongTo = k;
@@ -110,7 +111,7 @@ public class KMeans implements IClustering {
         }
     }
 
-    private double updateKernels() {
+    private double updateKernels() throws MadrixException {
         double epsilon = .0;
         for (Entry<Integer, Set<Integer>> pair : clusters.entrySet()) {
             int kid = pair.getKey();
@@ -131,7 +132,7 @@ public class KMeans implements IClustering {
             for (int i = 0; i < kernels[kid].length; i++) {
                 kernels[kid][i] /= pair.getValue().size();
             }
-            epsilon += AbstractDensityClustering.distance(oldPos, kernels[kid], isDTW);
+            epsilon += AbstractDensityClustering.distance(oldPos, kernels[kid], type);
         }
         System.out.println();
         return epsilon /= clusters.size();

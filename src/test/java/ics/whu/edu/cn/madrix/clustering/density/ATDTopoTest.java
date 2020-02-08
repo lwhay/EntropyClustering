@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import ics.whu.edu.cn.madrix.clustering.wapper.ClusteringBenchTranslator;
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 
 /**
  * @author Administrator
@@ -20,14 +21,14 @@ public class ATDTopoTest {
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MadrixException {
         ClusteringBenchTranslator cbt =
                 new ClusteringBenchTranslator("test/ics/whu/edu/cn/madrix/clustering/resources/Compound3.txt");
-        ATD atd = new ATD(cbt.getData(), 6, 2, false);
+        ATD atd = new ATD(cbt.getData(), 6, 2, 1);
         List<Integer> pq = atd.getPriority();
         int center = pq.get(15);
         @SuppressWarnings("unused")
-        int[] centers = { 0, 1, 3, 7, 15, 26, 27 };
+        int[] centers = {0, 1, 3, 7, 15, 26, 27};
         //System.out.println(center);
         for (int i = 1; i < pq.size(); i++) {
             Set<Integer> nns = new HashSet<Integer>(atd.getNbs().get(center).subList(0, i + 1));

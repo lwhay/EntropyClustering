@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 import ics.whu.edu.cn.madrix.stream.utils.OrderInformation;
 import org.apache.commons.math3.special.Gamma;
 
@@ -23,8 +24,6 @@ import org.apache.commons.math3.special.Gamma;
  *
  */
 public class ATD extends AbstractDensityClustering implements IClustering {
-    private final boolean isDTW;
-
     private final int KT;
 
     static private final int EXPENSIONDEGREE = 2;
@@ -46,11 +45,11 @@ public class ATD extends AbstractDensityClustering implements IClustering {
 
     private final double BALL;
 
-    public ATD(double[][] data, int K, int k, boolean isDTW) {
-        this.isDTW = isDTW;
+    public ATD(double[][] data, int K, int k, int type) throws MadrixException {
+        this.type = type;
         this.KT = k;
         this.data = data;
-        this.dim = isDTW ? 2 : data[0].length;
+        this.dim = (type == 1) ? 2 : data[0].length;
         this.BALL = Math.pow(Math.PI, dim / 2) / Gamma.gamma(dim / 2 + 1);
         rankingdist = new double[data.length * data.length];
         dists = new double[data.length][];
@@ -58,7 +57,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
             dists[i] = new double[data.length];
             Map<Integer, Double> distMap = new HashMap<>();
             for (int j = 0; j < data.length; j++) {
-                dists[i][j] = distance(data[i], data[j], isDTW);
+                dists[i][j] = distance(data[i], data[j], type);
                 rankingdist[i * data.length + j] = dists[i][j];
                 distMap.put(j, dists[i][j]);
             }
@@ -169,7 +168,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
     }
 
     @SuppressWarnings("unused")
-    private int peakEntropyNNs(Set<Integer> pathNNs, double nnAvg) {
+    private int peakEntropyNNs(Set<Integer> pathNNs, double nnAvg) throws MadrixException {
         int peak = -1;
         double minEntropy = Double.MAX_VALUE;
         for (int oid : pathNNs) {
@@ -227,7 +226,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
     }
 
     @SuppressWarnings("unused")
-    private int peakNNs(Set<Integer> pathNNs, double nnAvg) {
+    private int peakNNs(Set<Integer> pathNNs, double nnAvg) throws MadrixException {
         int peak = -1;
         double minEntropy = Double.MAX_VALUE;
         for (int oid : pathNNs) {
@@ -307,12 +306,12 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         return sumMaxDist / bs.size();
     }
 
-    public double entropy(Set<Integer> pts) {
+    public double entropy(Set<Integer> pts) throws MadrixException {
         double volume = .0f;
         for (int me : pts) {
             double md = .0;
             for (int you : pts) {
-                double d = distance(data[me], data[you], isDTW);
+                double d = distance(data[me], data[you], type);
                 if (d > md) {
                     md = d;
                 }
@@ -330,13 +329,13 @@ public class ATD extends AbstractDensityClustering implements IClustering {
     }
 
     // To be used for kNN-based entropy.
-    public double entropy(Set<Integer> pts, int k) {
+    public double entropy(Set<Integer> pts, int k) throws MadrixException {
         double volume = .0f;
         for (int me : pts) {
             double md = Double.MAX_VALUE;
             FastBoundedPriorityQueue<Double> queue = new FastBoundedPriorityQueue<>(k, true);
             for (int you : pts) {
-                double d = distance(data[me], data[you], isDTW);
+                double d = distance(data[me], data[you], type);
                 queue.add(d);
             }
             //md = queue.pop();
@@ -348,7 +347,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         return entropy;
     }
 
-    public double entropySlow(Set<Integer> pts, int k) {
+    public double entropySlow(Set<Integer> pts, int k) throws MadrixException {
         double volume = .0f;
         for (int me : pts) {
             double md = Double.MAX_VALUE;
@@ -362,7 +361,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
                 }
             });
             for (int you : pts) {
-                double d = distance(data[me], data[you], isDTW);
+                double d = distance(data[me], data[you], type);
                 queue.add(d);
             }
             int polled = 0;
@@ -420,7 +419,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         return initEntropies;
     }
 
-    private static void exprCircle() {
+    private static void exprCircle() throws MadrixException {
         long bt = System.currentTimeMillis();
         int cnt = 20;
         int begin = 0;
@@ -442,7 +441,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         long et = System.currentTimeMillis();
         System.out.println("Init: " + (et - bt));
         bt = System.currentTimeMillis();
-        ATD atd = new ATD(data, 2, 2, false);
+        ATD atd = new ATD(data, 2, 2, 0);
         et = System.currentTimeMillis();
         System.out.println("Construct: " + (et - bt));
         bt = System.currentTimeMillis();
@@ -458,7 +457,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         System.out.println("Entropy: " + (et - bt));
     }
 
-    private static void exprRectangle() {
+    private static void exprRectangle() throws MadrixException {
         long bt = System.currentTimeMillis();
         int card = 60;
         double data[][] = new double[card * card][2];
@@ -471,7 +470,7 @@ public class ATD extends AbstractDensityClustering implements IClustering {
         long et = System.currentTimeMillis();
         System.out.println("Init: " + (et - bt));
         bt = System.currentTimeMillis();
-        ATD atd = new ATD(data, 2, 2, false);
+        ATD atd = new ATD(data, 2, 2, 0);
         et = System.currentTimeMillis();
         System.out.println("Construct: " + (et - bt));
         bt = System.currentTimeMillis();
@@ -488,7 +487,11 @@ public class ATD extends AbstractDensityClustering implements IClustering {
     }
 
     public static void main(String[] args) {
-        exprCircle();
-        exprRectangle();
+        try {
+            exprCircle();
+            exprRectangle();
+        } catch (MadrixException e) {
+            e.printStackTrace();
+        }
     }
 }

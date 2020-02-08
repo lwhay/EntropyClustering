@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
 import ics.whu.edu.cn.madrix.stream.utils.OrderInformation;
 
 /**
@@ -28,8 +29,8 @@ public class DpcDecision extends AbstractDensityClustering implements IClusterin
 
     List<Map.Entry<Integer, Double>> decision = new ArrayList<>();
 
-    public DpcDecision(double[][] data, int K, double cutoff, boolean isDTW) {
-        this.isDTW = isDTW;
+    public DpcDecision(double[][] data, int K, double cutoff, int type) throws MadrixException {
+        this.type = type;
         this.data = data;
         this.K = K;
         this.ouputLabels = new int[data.length];
@@ -41,7 +42,7 @@ public class DpcDecision extends AbstractDensityClustering implements IClusterin
             int tidx = 0;
             dist[sidx] = new double[data.length];
             for (double[] t : data) {
-                dist[sidx][tidx] = distance(s, t, isDTW);
+                dist[sidx][tidx] = distance(s, t, type);
                 rankingdist[sidx * data.length + tidx] = dist[sidx][tidx];
                 tidx++;
             }
@@ -52,7 +53,7 @@ public class DpcDecision extends AbstractDensityClustering implements IClusterin
     }
 
     @Override
-    public void action() {
+    public void action() throws MadrixException {
         Map<Integer, Integer> denest = new HashMap<>();
         //Map<Integer, List<Integer>> distSort = new HashMap<>();
         for (int i = 0; i < data.length; i++) {
@@ -62,7 +63,7 @@ public class DpcDecision extends AbstractDensityClustering implements IClusterin
             for (int j = 0; j < data.length; j++) {
                 double[] pt = data[j];
                 //dists.put(oid++, distance(pt, data[i]));
-                if (distance(pt, data[i], isDTW) <= radius) {
+                if (distance(pt, data[i], type) <= radius) {
                     cnt++;
                 }
             }
@@ -85,7 +86,7 @@ public class DpcDecision extends AbstractDensityClustering implements IClusterin
                 double dt = Double.MAX_VALUE;
                 int nid = -1;
                 for (int i = 0; i < idx; i++) {
-                    double cdt = distance(data[sequence.get(i)], data[oid], isDTW);
+                    double cdt = distance(data[sequence.get(i)], data[oid], type);
                     if (cdt < dt) {
                         dt = cdt;
                         nid = sequence.get(i);

@@ -1095,9 +1095,18 @@ public class MadrixUtils {
     public static double vectorPNorm(double[] dest, int p) {
         double norm = 0;
         for (int i = 0; i < dest.length; i++) {
-            norm = Math.pow(dest[i], p);
+            norm += Math.pow(dest[i], p);
         }
         return Math.pow(norm, 1 / (double) p);
+    }
+
+    public static double vectorPNorm(double[] src, double[] dest, int p) {
+        double cros = 0;
+        for (int i = 0; i < dest.length; i++) {
+            cros += Math.sqrt(Math.pow(src[i], p)) * Math.sqrt(Math.pow(dest[i], p));
+        }
+
+        return (1 - Math.sqrt(Math.pow(cros, p)) / (vectorPNorm(src, p) * vectorPNorm(dest, p)));
     }
 
     public static double vectorPDistance(double[] src, double[] des, int p) throws MadrixException {

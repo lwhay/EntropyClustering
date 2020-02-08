@@ -66,7 +66,7 @@ public abstract class AbstractDensityClustering {
                 break;
             }
             case 2: {
-                d = MadrixUtils.vectorPDistance(s, t, DEFAULT_NORM_POW);
+                d = MadrixUtils.vectorPNorm(s, t, DEFAULT_NORM_POW);
             }
         }
         return d;

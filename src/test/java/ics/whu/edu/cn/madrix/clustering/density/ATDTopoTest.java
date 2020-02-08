@@ -24,7 +24,7 @@ public class ATDTopoTest {
     public static void main(String[] args) throws IOException, MadrixException {
         ClusteringBenchTranslator cbt =
                 new ClusteringBenchTranslator("test/ics/whu/edu/cn/madrix/clustering/resources/Compound3.txt");
-        ATD atd = new ATD(cbt.getData(), 6, 2, 1);
+        ATD atd = new ATD(cbt.getData(), 6, 2, 0);
         List<Integer> pq = atd.getPriority();
         int center = pq.get(15);
         @SuppressWarnings("unused")

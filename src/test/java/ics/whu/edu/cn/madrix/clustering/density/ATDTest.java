@@ -3,6 +3,7 @@
  */
 package ics.whu.edu.cn.madrix.clustering.density;
 
+import ics.whu.edu.cn.madrix.basis.MadrixUtils;
 import ics.whu.edu.cn.madrix.clustering.evaluation.ClusteringMetrics;
 import ics.whu.edu.cn.madrix.clustering.wapper.ClusteringBenchTranslator;
 import ics.whu.edu.cn.madrix.common.exceptions.MadrixException;
@@ -23,6 +24,7 @@ public class ATDTest {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException, MadrixException {
+        System.out.println(MadrixUtils.vectorPNorm(new double[]{1, 0}, new double[]{1, 0}, 2));
         if (args.length != 4) {
             System.out.println("Usage: command path clusterNumber k isDTW");
             System.exit(-1);

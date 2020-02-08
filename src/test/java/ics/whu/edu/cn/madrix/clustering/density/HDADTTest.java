@@ -24,7 +24,7 @@ public class HDADTTest {
     public static void main(String[] args) throws IOException, MadrixException {
         ClusteringBenchTranslator cbt = new ClusteringBenchTranslator(args[0]);
         int Ker = Integer.valueOf(args[1]).intValue();
-        ATD atd = new ATD(cbt.getData(), Ker, Integer.parseInt(args[2]), 1);
+        ATD atd = new ATD(cbt.getData(), Ker, Integer.parseInt(args[2]), 0);
         atd.action();
         List<Integer> priority = atd.getPriority();
         for (int i = 0; i < cbt.getData().length; i++) {
